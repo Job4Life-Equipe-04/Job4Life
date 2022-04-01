@@ -1,0 +1,317 @@
+#------------------------------------------------------------
+#        Script MySQL.
+#------------------------------------------------------------
+
+
+#------------------------------------------------------------
+# Table: Address
+#------------------------------------------------------------
+
+CREATE TABLE Address(
+        location_id              Int  Auto_increment  NOT NULL ,
+        location_street_number   Char (40) ,
+        location_street_name     Char (40) ,
+        location_residence_name  Char (40) ,
+        location_residence_floor Int ,
+        remote_work              Bool NOT NULL
+	,CONSTRAINT Address_PK PRIMARY KEY (location_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: City
+#------------------------------------------------------------
+
+CREATE TABLE City(
+        city_id   Int  Auto_increment  NOT NULL ,
+        city_name Char (40) NOT NULL ,
+        zip_code  Char (40) NOT NULL UNIQUE,
+        country   Char (40) NOT NULL
+	,CONSTRAINT City_PK PRIMARY KEY (city_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: Users
+#------------------------------------------------------------
+
+CREATE TABLE Users(
+        user_id              Int  Auto_increment  NOT NULL ,
+        user_username        Varchar (40) NOT NULL UNIQUE,
+        user_email           Varchar (40) NOT NULL UNIQUE,
+        user_password        Varchar (150) NOT NULL ,
+        user_first_name      Char (40) NOT NULL ,
+        user_last_name       Char (40) NOT NULL ,
+        user_genre           Char (5) NOT NULL ,
+        user_date_birth      Date NOT NULL ,
+        user_status          Char (40) NOT NULL ,
+        user_phone_number    Char (10) NOT NULL ,
+        user_cesi_center     Char (40) NOT NULL ,
+        user_minor           Char (40) NOT NULL ,
+        user_handicap        Bool NOT NULL ,
+        user_ip              Varchar (50) NOT NULL ,
+        user_sign_up_date    TimeStamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        user_profile_picture Longblob NOT NULL ,
+        city_id              Int NOT NULL
+	,CONSTRAINT Users_PK PRIMARY KEY (user_id)
+
+	,CONSTRAINT Users_City_FK FOREIGN KEY (city_id) REFERENCES City(city_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: Company 
+#------------------------------------------------------------
+
+CREATE TABLE Company(
+        company_id                        Int  Auto_increment  NOT NULL ,
+        company_name                      Char (40) NOT NULL ,
+        company_activity_domain           Varchar (40) NOT NULL ,
+        company_inter_amount_cesi         Int NOT NULL ,
+        company_description               Varchar (500) ,
+        company_evaluation_global_trainee Int NOT NULL ,
+        company_tutor_trust               Int NOT NULL ,
+        company_logo                      Blob NOT NULL ,
+        company_number_like               Int NOT NULL
+	,CONSTRAINT Company_PK PRIMARY KEY (company_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: Class
+#------------------------------------------------------------
+
+CREATE TABLE Class(
+        class_id   Int  Auto_increment  NOT NULL ,
+        class_name Char (40) NOT NULL
+	,CONSTRAINT Class_PK PRIMARY KEY (class_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: Internship management
+#------------------------------------------------------------
+
+CREATE TABLE Internship_management(
+        internship_offer_id                      Int  Auto_increment  NOT NULL ,
+        internship_offer_name                    Char (50) NOT NULL ,
+        internship_offer_required_skill          Varchar (40) NOT NULL ,
+        internship_description                   Varchar (500) NOT NULL ,
+        internship_offer_duration                Int NOT NULL ,
+        internship_offer_starting_salary         Float NOT NULL ,
+        internship_offer_date                    Date NOT NULL ,
+        internship_starting_date                 Date NOT NULL ,
+        internship_ending_date                   Date NOT NULL ,
+        internship_offer_accepted_student_amount Int NOT NULL ,
+        location_id                              Int NOT NULL
+	,CONSTRAINT Internship_management_PK PRIMARY KEY (internship_offer_id)
+
+	,CONSTRAINT Internship_management_Address_FK FOREIGN KEY (location_id) REFERENCES Address(location_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: Application management
+#------------------------------------------------------------
+
+CREATE TABLE Application_management(
+        application_id                  Int  Auto_increment  NOT NULL ,
+        application_resume              Blob NOT NULL ,
+        application_motivation_letter   Blob NOT NULL ,
+        application_offer               Blob NOT NULL ,
+        application_validation_sheet    Blob NOT NULL ,
+        application_internship_contract Blob NOT NULL ,
+        user_id                         Int NOT NULL
+	,CONSTRAINT Application_management_PK PRIMARY KEY (application_id)
+
+	,CONSTRAINT Application_management_Users_FK FOREIGN KEY (user_id) REFERENCES Users(user_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: Criterias
+#------------------------------------------------------------
+
+CREATE TABLE Criterias(
+        criteria_id     Int  Auto_increment  NOT NULL ,
+        quality_work    Integer NOT NULL ,
+        salary          Integer NOT NULL ,
+        professionalism Integer NOT NULL ,
+        social_service  Integer NOT NULL
+	,CONSTRAINT Criterias_PK PRIMARY KEY (criteria_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: Roles
+#------------------------------------------------------------
+
+CREATE TABLE Roles(
+        roles_id  Int  Auto_increment  NOT NULL ,
+        role_name Char (40) NOT NULL
+	,CONSTRAINT Roles_PK PRIMARY KEY (roles_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: Permission
+#------------------------------------------------------------
+
+CREATE TABLE Permission(
+        permission_id           Int  Auto_increment  NOT NULL ,
+        create_company          Bool NOT NULL ,
+        update_company          Bool NOT NULL ,
+        delete_company          Bool NOT NULL ,
+        create_offer            Bool NOT NULL ,
+        update_offer            Bool NOT NULL ,
+        delete_offer            Bool NOT NULL ,
+        search_pilote_account   Bool NOT NULL ,
+        create_pilote_account   Bool NOT NULL ,
+        delete_pilote_account   Bool NOT NULL ,
+        search_account_delegate Bool NOT NULL ,
+        create_account_delegate Bool NOT NULL ,
+        update_account_delegate Bool NOT NULL ,
+        delete_account_delegate Bool NOT NULL ,
+        give_rights             Bool NOT NULL ,
+        create_student_account  Bool NOT NULL ,
+        update_student_account  Bool NOT NULL ,
+        delete_student_account  Bool NOT NULL ,
+        consult_stats_student   Bool NOT NULL ,
+        add_wishlist            Bool NOT NULL ,
+        delete_wishlist         Bool NOT NULL ,
+        to_apply                Bool NOT NULL ,
+        inform_candidate_1      Bool NOT NULL ,
+        inform_candidate_2      Bool NOT NULL ,
+        inform_candidate_3      Bool NOT NULL ,
+        inform_candidate_4      Bool NOT NULL ,
+        inform_candidate_5      Bool NOT NULL
+	,CONSTRAINT Permission_PK PRIMARY KEY (permission_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: to like
+#------------------------------------------------------------
+
+CREATE TABLE to_like(
+        user_id    Int NOT NULL ,
+        company_id Int NOT NULL
+	,CONSTRAINT to_like_PK PRIMARY KEY (user_id,company_id)
+
+	,CONSTRAINT to_like_Users_FK FOREIGN KEY (user_id) REFERENCES Users(user_id)
+	,CONSTRAINT to_like_Company0_FK FOREIGN KEY (company_id) REFERENCES Company(company_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: to correspond
+#------------------------------------------------------------
+
+CREATE TABLE to_correspond(
+        location_id Int NOT NULL ,
+        city_id     Int NOT NULL
+	,CONSTRAINT to_correspond_PK PRIMARY KEY (location_id,city_id)
+
+	,CONSTRAINT to_correspond_Address_FK FOREIGN KEY (location_id) REFERENCES Address(location_id)
+	,CONSTRAINT to_correspond_City0_FK FOREIGN KEY (city_id) REFERENCES City(city_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: to possess
+#------------------------------------------------------------
+
+CREATE TABLE to_possess(
+        company_id  Int NOT NULL ,
+        criteria_id Int NOT NULL
+	,CONSTRAINT to_possess_PK PRIMARY KEY (company_id,criteria_id)
+
+	,CONSTRAINT to_possess_Company_FK FOREIGN KEY (company_id) REFERENCES Company(company_id)
+	,CONSTRAINT to_possess_Criterias0_FK FOREIGN KEY (criteria_id) REFERENCES Criterias(criteria_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: to have
+#------------------------------------------------------------
+
+CREATE TABLE to_have(
+        roles_id Int NOT NULL ,
+        user_id  Int NOT NULL
+	,CONSTRAINT to_have_PK PRIMARY KEY (roles_id,user_id)
+
+	,CONSTRAINT to_have_Roles_FK FOREIGN KEY (roles_id) REFERENCES Roles(roles_id)
+	,CONSTRAINT to_have_Users0_FK FOREIGN KEY (user_id) REFERENCES Users(user_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: to refer
+#------------------------------------------------------------
+
+CREATE TABLE to_refer(
+        class_id Int NOT NULL ,
+        user_id  Int NOT NULL
+	,CONSTRAINT to_refer_PK PRIMARY KEY (class_id,user_id)
+
+	,CONSTRAINT to_refer_Class_FK FOREIGN KEY (class_id) REFERENCES Class(class_id)
+	,CONSTRAINT to_refer_Users0_FK FOREIGN KEY (user_id) REFERENCES Users(user_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: to locate
+#------------------------------------------------------------
+
+CREATE TABLE to_locate(
+        location_id Int NOT NULL ,
+        company_id  Int NOT NULL
+	,CONSTRAINT to_locate_PK PRIMARY KEY (location_id,company_id)
+
+	,CONSTRAINT to_locate_Address_FK FOREIGN KEY (location_id) REFERENCES Address(location_id)
+	,CONSTRAINT to_locate_Company0_FK FOREIGN KEY (company_id) REFERENCES Company(company_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: to answer 
+#------------------------------------------------------------
+
+CREATE TABLE to_answer(
+        application_id      Int NOT NULL ,
+        internship_offer_id Int NOT NULL ,
+        internship_status   Char (40) NOT NULL
+	,CONSTRAINT to_answer_PK PRIMARY KEY (application_id,internship_offer_id)
+
+	,CONSTRAINT to_answer_Application_management_FK FOREIGN KEY (application_id) REFERENCES Application_management(application_id)
+	,CONSTRAINT to_answer_Internship_management0_FK FOREIGN KEY (internship_offer_id) REFERENCES Internship_management(internship_offer_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: to add (wish-list)
+#------------------------------------------------------------
+
+CREATE TABLE to_add__wish_list_(
+        user_id             Int NOT NULL ,
+        internship_offer_id Int NOT NULL
+	,CONSTRAINT to_add__wish_list__PK PRIMARY KEY (user_id,internship_offer_id)
+
+	,CONSTRAINT to_add__wish_list__Users_FK FOREIGN KEY (user_id) REFERENCES Users(user_id)
+	,CONSTRAINT to_add__wish_list__Internship_management0_FK FOREIGN KEY (internship_offer_id) REFERENCES Internship_management(internship_offer_id)
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: _to have
+#------------------------------------------------------------
+
+CREATE TABLE _to_have(
+        permission_id Int NOT NULL ,
+        roles_id      Int NOT NULL
+	,CONSTRAINT _to_have_PK PRIMARY KEY (permission_id,roles_id)
+
+	,CONSTRAINT _to_have_Permission_FK FOREIGN KEY (permission_id) REFERENCES Permission(permission_id)
+	,CONSTRAINT _to_have_Roles0_FK FOREIGN KEY (roles_id) REFERENCES Roles(roles_id)
+)ENGINE=InnoDB;
+
