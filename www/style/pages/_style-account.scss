@@ -1,0 +1,8 @@
+#account {
+  margin-top: 20rem;
+  @include flex-center;
+  .account-content {
+    background: red;
+    width: 500px;
+  }
+}

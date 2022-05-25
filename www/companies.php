@@ -1,62 +1,229 @@
+<?php   require_once $_SERVER['DOCUMENT_ROOT'].'/back-end/server/config.php'; ?>
 <!DOCTYPE html>
-<html lang="FR">
+<html lang="EN">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Description du site web (à changer pour chaque page) - SEO">
-    <title>Job4Life - Agence de recherche</title>
+    <meta name="description" content="Internships research agency">
+    <meta name="theme-color" content="#3DD2D4">
+    <title>Job4Life · Find an internship, a trainee or a company!</title>
     <link rel="icon" href="./assets/images/favicon.ico">
-    <link rel="stylesheet" href="./style/mainindex.css">
+    <link rel="stylesheet" href="./style/index.css">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" href="assets/images/icon-192.png">
 </head>
 
 <body data-barba="wrapper">
     <header>
-        <div class="loading">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-        </div>
-        <div class="cont-bandes">
-            <div class="bande"></div>
-            <div class="bande"></div>
-            <div class="bande"></div>
-            <div class="bande"></div>
-            <div class="bande"></div>
-            <div class="bande"></div>
-            <div class="bande"></div>
-            <div class="bande"></div>
-            <div class="bande"></div>
-            <div class="bande"></div>
-        </div>
         <nav>
-            <button type="button" id="color-site"></button>
-            <span>Job4Life</span>
-            <img src="" alt="Job4Life logo">
+
+            <div class="wishlist">
+            </div>
+            <div type="button" id="color-site">
+                <i class="mode"></i>
+            </div>
             <ul>
+                <li><a href="#"><img src="./assets/images/job4life.png" alt="Job4Life logo"></a></li>
                 <li><a href="index.php">Internships</a></li>
                 <li><a href="./students.php">Students</a></li>
                 <li><a href="./companies.php">Companies</a></li>
                 <li><a href="./contact.php">Contact</a></li>
             </ul>
-            <div class="connection">
-                <span>Mon espace</span>
-                <img src="" alt="Person">
+            <div id="account-button">
+                <?php 
+             session_start();
+            if(isset($_SESSION['student'])) {
+                    echo "<span class='nav-span'>".$_SESSION['student']."</span>";
+             ?>
+                <div class="login-menu">
+                    <a href="./back-end/server/account/account.php">My account</a>
+                    <a href="./back-end/server/account/logout.php">Log out</a>
+                </div>
+                <?php } else {
+                    echo '<span class="nav-span">Sign in</span>';
+                } ?>
+                <img src="./assets/images/login-icon.svg" alt="A person" id="icon-person">
             </div>
+            <button class="box">
+                <div class="hamburger">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </button>
         </nav>
+        <button class="box">
+            <div class="hamburger">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+        </button>
     </header>
-    <main data-barba="container" data-barba-namespace="main">
+
+    <main data-barba="container" data-barba-namespace="companies">
+        <section id="companies">
+            <div class="createcompanycont">
+                <?php 
+            if(isset($_SESSION['student'])) {
+                    echo '<button type="button" id="createcompany">Add a company</button>'; }
+             ?>
+                <div class="createcompany">
+                    <form name="inscriptioncompany" method="post" action="./back-end/server/companies/createcompany.php"
+                        enctype="multipart/mixed">
+                        Nom : <input type="text" name="nomentre" />
+                        Description : <input type="text" name="desc" />
+                        Domaine : <input type="text" name="domaineentre" /><br />
+                        Nombre d'étudiants : <input type="text" name="numetu" />
+                        Logo : <input type="file" name="logo" /><br />
+                        Pays : <input type="text" name="pays" />
+                        Ville : <input type="text" name="ville" />
+                        Code Postal : <input type="text" name="cpostal" /><br />
+                        Numéro adresse : <input type="text" name="numad" />
+                        Nom de la rue : <input type="text" name="nomad" />
+                        Nom de la résidence : <input type="text" name="nomres" />
+                        étage : <input type="text" name="etage" /><br />
+                        Télétravail :
+                        <select name="teletravail" id="idteletravail">
+                            <option value="1">Oui</option>
+                            <option value="2">Non</option>
+                        </select>
+                        <input type="submit" name="create" value="OK" />
+                </div>
+            </div>
+
+
+
+            <div class="AllComp">
+                <?php require_once './back-end/server/dynamic-content/companies.php' ?>
+            </div>
+        </section>
     </main>
+    <div class="cont-space">
+        <div class="space">
+            <div class="login">
+                <h3>You already have an account?</h3>
+                <h4>Sign in!</h4>
+                <span>You are</span>
+                <p>Student<button class="status"><i class="statut-type"></i></button>Recruiter</p>
+                <form action="./back-end/server/account/connection.php" method="POST">
+                    <label for="signin-login">Your username (or your email)</label><br>
+                    <input type="text" name="signin-login" placeholder="Username or email"><br>
+                    <label for="signin-password">Your password</label><br>
+                    <input type="password" name="signin-password" placeholder="Password"><br>
+                    <a href="./back-end/server/account/forgot.php">Forgot password?</a><br>
+                    <button type="submit" class="sign-in">Sign in</button>
+                    <?php require_once './back-end/http-errors/http-login.php' ?>
+                </form>
+            </div>
+            <div class="registration">
+                <div class="closed">
+                    <div class="cross"></div>
+                    <div class="cross"></div>
+                </div>
+                <div class="create-account">
+                    <a href="./creation.php">Sign up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section id="filters-offers">
+        <div id="filter-list">
+            <p>Lorem ipsum dolor sit amet.</p>
+        </div>
+    </section>
+    <div class="loading">
+        <div class="loader-cont">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="shadow"></div>
+            <div class="shadow"></div>
+            <div class="shadow"></div>
+            <div class="loading-text">
+                <span>L</span>
+                <span>O</span>
+                <span>A</span>
+                <span>D</span>
+                <span>I</span>
+                <span>N</span>
+                <span>G</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="cont-bands">
+        <div class="band"></div>
+        <div class="band"></div>
+        <div class="band"></div>
+        <div class="band"></div>
+        <div class="band"></div>
+        <div class="band"></div>
+        <div class="band"></div>
+        <div class="band"></div>
+        <div class="band"></div>
+        <div class="band"></div>
+    </div>
+    <div id="progress"></div>
     <div class="cursor"></div>
+
     <footer>
-        <p>Job4life</p>
+        <div class="footer-ul">
+            <div class="services">
+                <h4>Our services</h4>
+                <ul>
+                    <li><a href="#">Find an internship</a></li>
+                    <li><a href="#">Find a company</a></li>
+                    <li><a href="#">Find a trainee</a></li>
+                </ul>
+            </div>
+
+            <div class="contact">
+                <h4>Contact us</h4>
+                <ul>
+                    <li>+44 20 41 34 56 78</li>
+                    <li>contact@job4life.fr</li>
+                    <li>15 Noel St, London W1F 8GJ, <br> United Kingdom</li>
+                </ul>
+            </div>
+            <div class="opening">
+                <h4>Opening hours</h4>
+                <ul>
+                    <li>✅ Mon 8AM - 5PM</li>
+                    <li>✅ Tue 9AM - 5PM</li>
+                    <li>✅ Wed 11AM - 4PM</li>
+                    <li>✅ Thu 9AM - 5PM</li>
+                    <li>✅ Fri 9AM - 5PM</li>
+                    <li>❌ Sat Closed</li>
+                    <li>❌ Sun Closed</li>
+                </ul>
+            </div>
+            <div class="networks">
+                <h4>Our networks</h4>
+                <ul>
+                    <li><a href="https://www.linkedin.com" target="Blank"><img src="./assets/images/linkedin-logo.svg"
+                                alt="Linkedin logo" class="footer-img">
+                            Linkedin/Job4Life</a></li>
+                    <li><a href="https://fr-fr.facebook.com" target="Blank"><img src="./assets/images/facebook-logo.svg"
+                                alt="Facebook logo" class="footer-img">
+                            Facebook/Job4Life</a></li>
+                    <li><a href="http://twitter.com/" target="Blank"><img src="./assets/images/twitter-logo.svg"
+                                alt="Twitter logo" class="footer-img">
+                            Twitter/Job4Life</a></li>
+                    <li><a href="http://youtube.com/" target="Blank"><img src="./assets/images/youtube-logo.svg"
+                                alt="Youtube logo" class="footer-img"> Youtube/Job4Life</a></li>
+                </ul>
+            </div>
+            <span>Job4Life</span>
+        </div>
+        <a href="#" id="copyrights">© Copyright 2022 Job4Life. All rights reserved.</a>
     </footer>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.4.1/gsap.min.js"></script>
 <script src="https://unpkg.com/@barba/core"></script>
 <script src="./script/jquery-3.6.0.min.js"></script>
+<script src="./script/pages/companies.js"></script>
 <script src="./script/script.js"></script>
 
 </html>

@@ -1,0 +1,141 @@
+.AllComp {
+  @include flex-center;
+  gap: 70px;
+  flex-wrap: wrap;
+  gap: 80px;
+  margin-left: 6rem;
+  margin-right: 6rem;
+  margin-top: 250px;
+  .company {
+    position: relative;
+    img {
+      z-index: 0;
+      border-radius: 10px;
+    }
+    h3,
+    h4,
+    h5,
+    h6 {
+      position: absolute;
+      font-family: "Ddinbold";
+      z-index: 1;
+      font-size: 1.1rem;
+      margin-left: 3%;
+      color: $light-color;
+    }
+    h3 {
+      bottom: 130px;
+    }
+    h4 {
+      bottom: 100px;
+    }
+    h5 {
+      bottom: 70px;
+    }
+
+    button {
+      position: absolute;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      padding: 5px 15px;
+      border: 1px solid hsl(11, 90%, 44%);
+      color: hsl(11, 90%, 44%);
+      transition: 0.6s;
+      &:hover {
+        color: $light-color;
+        background-color: hsl(11, 90%, 44%);
+      }
+    }
+  }
+}
+
+.createcompanycont {
+  @include flex-center;
+  z-index: 0;
+  margin-top: 450px;
+}
+
+.createcompany {
+  @include flex-center;
+  flex-wrap: wrap;
+  width: 50%;
+  background: red;
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  height: 100vh;
+}
+
+.createcompany {
+  display: flex;
+
+  display: none;
+}
+
+.cont-company-descripton {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: hsla(0, 0%, 0%, 0.4);
+  z-index: 3;
+  height: 100%;
+  width: 100%;
+  @include flex-center;
+  display: none;
+  .closed {
+    position: absolute;
+    top: 25px;
+    right: 1%;
+    width: 50px;
+    height: 50px;
+    .cross {
+      width: 30px;
+      height: 2px;
+      background: hsl(0, 4%, 5%);
+      &:nth-child(1) {
+        transform: rotate(-45deg);
+      }
+      &:nth-child(2) {
+        transform: rotate(45deg);
+      }
+    }
+  }
+  .company-description {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    width: 60%;
+    z-index: 4;
+    background: hsl(0, 7%, 21%);
+    h3 {
+      font-size: 1.3rem;
+      margin-top: 100px;
+    }
+    h4 {
+      position: absolute;
+      font-size: 1.2rem;
+      top: 160px;
+    }
+  }
+  .closer {
+    z-index: 5;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 30px;
+    right: 21%;
+    .cross {
+      background: $light-color;
+      width: 30px;
+      height: 2px;
+      &:nth-child(1) {
+        transform: rotate(-45deg);
+      }
+      &:nth-child(2) {
+        transform: rotate(45deg);
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+    "name": "Job4Life",
+    "short_name": "Job4Life",
+    "version": "2.3.4.",
+    "private": true,
+    "icons": [
+      {
+        "src": "/assets/images/icon-192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "/assets/images/icon-512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "index.php",
+    "background_color": "#3DD2D4",
+    "theme_color": "#100F10",
+    "display": "standalone"
+  }
